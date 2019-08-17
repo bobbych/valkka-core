@@ -26,7 +26,7 @@
  *  @file    rgbframefifo_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2019
- *  @version 0.1
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -38,6 +38,8 @@
 #include "rgbframefifo.h"
 #include "avthread.h"
 #include "livethread.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

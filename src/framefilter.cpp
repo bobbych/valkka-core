@@ -26,7 +26,7 @@
  *  @file    framefilter.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  */ 
@@ -85,6 +85,24 @@ BriefInfoFrameFilter::BriefInfoFrameFilter(const char* name, FrameFilter* next) 
 void BriefInfoFrameFilter::go(Frame* frame) {
   std::cout << "BriefInfoFrameFilter : "<< this->name << " : " << *(frame) << " dT=" << frame->mstimestamp-getCurrentMsTimestamp() << std::endl;
 }
+
+
+ThreadSafeFrameFilter::ThreadSafeFrameFilter(const char* name, FrameFilter* next) : FrameFilter(name,next) {
+}
+
+void ThreadSafeFrameFilter::run(Frame* frame) {
+    if (!this->next) { return; } // call next filter .. if there is any
+    {
+        std::unique_lock<std::mutex> lk(this->mutex); 
+        (this->next)->run(frame);
+    }
+}
+
+void ThreadSafeFrameFilter::go(Frame* frame) {
+}
+
+
+
 
 
 ForkFrameFilter::ForkFrameFilter(const char* name, FrameFilter* next, FrameFilter* next2) : FrameFilter(name,next), next2(next2) {
@@ -203,6 +221,22 @@ SlotFrameFilter::SlotFrameFilter(const char* name, SlotNumber n_slot, FrameFilte
 void SlotFrameFilter::go(Frame* frame) {
   frame->n_slot=n_slot;
 }
+
+
+
+PassSlotFrameFilter::PassSlotFrameFilter(const char* name, SlotNumber n_slot, FrameFilter* next) : FrameFilter(name,next), n_slot(n_slot) {
+}
+    
+void PassSlotFrameFilter::go(Frame* frame) {
+}
+
+void PassSlotFrameFilter::run(Frame* frame) {
+    if (!next) { return; }
+    if (frame->n_slot == n_slot) {
+        next->run(frame);
+    }
+}
+
 
 
 
@@ -627,7 +661,7 @@ void SwScaleFrameFilter::go(Frame* frame) { // do the scaling
     outputframe.copyMetaFrom(frame);
     next->run(&outputframe);
   }
-} 
+}
 
 
 

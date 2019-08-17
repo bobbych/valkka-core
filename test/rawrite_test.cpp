@@ -26,7 +26,7 @@
  *  @file    rawrite_test.cpp
  *  @author  Petri Eranko
  *  @date    2019
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -35,6 +35,8 @@
 #include "logging.h"
 #include "avdep.h"
 #include "rawrite.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

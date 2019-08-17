@@ -26,13 +26,13 @@
  *  @file    valkkafs.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief   A simple block file system for streaming media
  */ 
 
 #include "valkkafs.h"
-
+#include "numpy_no_import.h"
 
 ValkkaFS::ValkkaFS(const char *device_file, const char *block_file, std::size_t blocksize, std::size_t n_blocks, bool init) : device_file(device_file), block_file(block_file), blocksize(blocksize), n_blocks(n_blocks), col_0(0), col_1(0), current_row(0), prev_row(0), pyfunc(NULL), os(), init(init)
 {
@@ -347,7 +347,8 @@ void ValkkaFS::setArrayCall(PyObject* pyobj) {
     // Py_INCREF(pyobj);
     
     PyArrayObject *pyarr = (PyArrayObject*)pyobj;
-    long int *data = (long int*)pyarr->data;
+    // long int *data = (long int*)pyarr->data;
+    long int *data = (long int*)PyArray_DATA(pyarr);
     
     /*
     setVal(0,0,11);

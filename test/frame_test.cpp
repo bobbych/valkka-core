@@ -26,7 +26,7 @@
  *  @file    frame_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief Testing Frame classes.  Compile with "make tests" and run with valgrind
  *
@@ -36,6 +36,8 @@
 #include "framefilter.h"
 #include "logging.h"
 #include "avdep.h"
+#include "test_import.h"
+
 
 const char* stream_1   =std::getenv("VALKKA_TEST_RTSP_1");
 const char* stream_2   =std::getenv("VALKKA_TEST_RTSP_2");

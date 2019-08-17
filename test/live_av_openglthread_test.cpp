@@ -26,7 +26,7 @@
  *  @file    live_av_openglthread_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief   Test the full pipeline: LiveThread => AVThread => OpenGLThread
  *
@@ -39,6 +39,8 @@
 #include "avthread.h"
 #include "openglthread.h"
 #include "livethread.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

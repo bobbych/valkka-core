@@ -26,7 +26,7 @@
  *  @file    cachestream_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -39,6 +39,8 @@
 #include "valkkafs.h"
 #include "valkkafsreader.h"
 #include "cachestream.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

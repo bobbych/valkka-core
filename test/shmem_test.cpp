@@ -26,7 +26,7 @@
  *  @file    shmem_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -36,6 +36,7 @@
 #include "logging.h"
 #include "livethread.h"
 #include "sharedmem.h"
+#include "test_import.h"
 
 
 using namespace std::chrono_literals;

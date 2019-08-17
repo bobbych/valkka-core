@@ -28,20 +28,18 @@
  *  @file    valkkafs.h
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief
  */ 
 
+#include "common.h"
 #include "thread.h"
 #include "framefilter.h"
 #include "framefifo.h"
 #include "rawrite.h"
 #include "logging.h"
-
 #include "Python.h"
-#include "numpy/ndarraytypes.h"
-#include "numpy/arrayobject.h"
 
 /*
 #include "boost/python/numpy.hpp"

@@ -26,7 +26,7 @@
  *  @file    livethread_rtsp_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2018
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -36,6 +36,8 @@
 #include "framefilter.h"
 #include "logging.h"
 #include "avdep.h"
+#include "test_import.h"
+
 
 
 using namespace std::chrono_literals;

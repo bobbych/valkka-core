@@ -26,7 +26,7 @@
  *  @file    av_live_thread_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief Test producer (live thread) consumer (av thread)
  *
@@ -37,6 +37,8 @@
 #include "avthread.h"
 #include "framefilter.h"
 #include "logging.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;  // http://en.cppreference.com/w/cpp/thread/sleep_for

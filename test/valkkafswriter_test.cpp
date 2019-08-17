@@ -26,7 +26,7 @@
  *  @file    valkkafswriter_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.12.0 
  *  
  *  @brief 
  *
@@ -34,10 +34,13 @@
 
 #include "framefifo.h"
 #include "framefilter.h"
+#include "fileframefilter.h"
 #include "logging.h"
 #include "avdep.h"
 #include "valkkafs.h"
 #include "valkkafsreader.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;
@@ -213,7 +216,7 @@ void test_3() { // don't do: 3, 2 => crash .. of course .. number of blocks don'
 
 void test_4() { // 3, 4
     const char* name = "@TEST: valkkafswriter_test: test 4: ";
-    std::cout << name <<"** @@Use valkkafsreader to read frames from ValkkaFS **" << std::endl;
+    std::cout << name <<"** @@Use valkkafsreader to read frames from ValkkaFS.  Pass them to InitStreamFrameFilter. **" << std::endl;
     int i;
     
     // create ValkkaFS and WriterReaderThread
@@ -229,8 +232,9 @@ void test_4() { // 3, 4
         fstool.dumpBlock(i);
     }
     
-    InfoFrameFilter filter("info");    
-    ValkkaFSReaderThread ft("reader", fs, filter);
+    InfoFrameFilter info_filter("info");
+    InitStreamFrameFilter init_filter("init", &info_filter);
+    ValkkaFSReaderThread ft("reader", fs, init_filter);
     
     std::list<std::size_t> block_list = {0, 1, 2};
     
