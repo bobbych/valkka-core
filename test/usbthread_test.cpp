@@ -26,7 +26,7 @@
  *  @file    usbthread_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   Test USB cam classes
  *
@@ -40,6 +40,8 @@
 #include "openglthread.h"
 #include "livethread.h"
 #include "usbthread.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

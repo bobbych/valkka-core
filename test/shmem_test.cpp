@@ -26,7 +26,7 @@
  *  @file    shmem_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief 
  *
@@ -36,6 +36,7 @@
 #include "logging.h"
 #include "livethread.h"
 #include "sharedmem.h"
+#include "test_import.h"
 
 
 using namespace std::chrono_literals;
@@ -49,7 +50,7 @@ const char* stream_sdp =std::getenv("VALKKA_TEST_SDP");
 void test_1() { // open two terminals, start this from terminal 1 and "test 2" from terminal 2
   int inp;
   const char* name = "@TEST: shmem_test: test 1: ";
-  std::cout << name <<"** @@Create shared memory on the server side : INTERACTIVE TEST **" << std::endl;
+  std::cout << name <<"** @@Create shared memory on the SERVER side : INTERACTIVE TEST **" << std::endl;
   
   std::vector<uint8_t> payload;
   SharedMemSegment shmem("testing", 30*1024*1024, true);
@@ -71,7 +72,7 @@ void test_1() { // open two terminals, start this from terminal 1 and "test 2" f
 void test_2() {
   int inp, i, n;
   const char* name = "@TEST: shmem_test: test 2: ";
-  std::cout << name <<"** @@Create shared memory on the client side : INTERACTIVE TEST **" << std::endl;
+  std::cout << name <<"** @@Create shared memory on the CLIENT side : INTERACTIVE TEST **" << std::endl;
   
   SharedMemSegment shmem("testing", 30*1024*1024, false);
   std::cout << "Enter an integer to read from shared mem" << std::endl;
@@ -87,7 +88,7 @@ void test_2() {
 
 void test_3() { // open two terminals.  Start this from first terminal and test_4 from the second terminal
   const char* name = "@TEST: shmem_test: test 3: ";
-  std::cout << name <<"** @@Create shmem ring buffer on the server side : INTERACTIVE TEST **" << std::endl;
+  std::cout << name <<"** @@Create shmem ring buffer on the SERVER side : INTERACTIVE TEST **" << std::endl;
   int inp, cc, i, index;
   std::vector<uint8_t> payload;
   SharedMemRingBuffer rb("testing",10,30*1024*1024,1000,true); // name, ncells, bytes per cell, timeout, server or not
@@ -130,7 +131,7 @@ void test_3() { // open two terminals.  Start this from first terminal and test_
 
 void test_4() {
   const char* name = "@TEST: shmem_test: test 4: ";
-  std::cout << name <<"** @@Create shmem ring buffer on the client side : INTERACTIVE TEST **" << std::endl;
+  std::cout << name <<"** @@Create shmem ring buffer on the CLIENT side : INTERACTIVE TEST **" << std::endl;
   int inp, index, i, ii, n;
   bool ok;
   std::vector<uint8_t> payload;

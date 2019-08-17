@@ -26,7 +26,7 @@
  *  @file    framefilter.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief 
  */ 
@@ -85,6 +85,24 @@ BriefInfoFrameFilter::BriefInfoFrameFilter(const char* name, FrameFilter* next) 
 void BriefInfoFrameFilter::go(Frame* frame) {
   std::cout << "BriefInfoFrameFilter : "<< this->name << " : " << *(frame) << " dT=" << frame->mstimestamp-getCurrentMsTimestamp() << std::endl;
 }
+
+
+ThreadSafeFrameFilter::ThreadSafeFrameFilter(const char* name, FrameFilter* next) : FrameFilter(name,next) {
+}
+
+void ThreadSafeFrameFilter::run(Frame* frame) {
+    if (!this->next) { return; } // call next filter .. if there is any
+    {
+        std::unique_lock<std::mutex> lk(this->mutex); 
+        (this->next)->run(frame);
+    }
+}
+
+void ThreadSafeFrameFilter::go(Frame* frame) {
+}
+
+
+
 
 
 ForkFrameFilter::ForkFrameFilter(const char* name, FrameFilter* next, FrameFilter* next2) : FrameFilter(name,next), next2(next2) {
@@ -203,6 +221,22 @@ SlotFrameFilter::SlotFrameFilter(const char* name, SlotNumber n_slot, FrameFilte
 void SlotFrameFilter::go(Frame* frame) {
   frame->n_slot=n_slot;
 }
+
+
+
+PassSlotFrameFilter::PassSlotFrameFilter(const char* name, SlotNumber n_slot, FrameFilter* next) : FrameFilter(name,next), n_slot(n_slot) {
+}
+    
+void PassSlotFrameFilter::go(Frame* frame) {
+}
+
+void PassSlotFrameFilter::run(Frame* frame) {
+    if (!next) { return; }
+    if (frame->n_slot == n_slot) {
+        next->run(frame);
+    }
+}
+
 
 
 
@@ -553,9 +587,9 @@ void BlockingFifoFrameFilter::go(Frame* frame) {
  */
 SwScaleFrameFilter::SwScaleFrameFilter(const char* name, int target_width, int target_height, FrameFilter* next) : FrameFilter(name,next), target_width(target_width), target_height(target_height), width(0), height(0), sws_ctx(NULL) {
   // shorthand
-  AVFrame *output_frame =outputframe.av_frame;
+  AVFrame *output_frame =outputframe.av_frame; // AVRGBFrame => AVBitmapFrame => AVMediaFrame constructor has reserved av_frame member
   
-  int nb = av_image_alloc(output_frame->data, output_frame->linesize, target_width, target_height, AV_PIX_FMT_RGB24, 1);
+  int nb = av_image_alloc(output_frame->data, output_frame->linesize, target_width, target_height, AV_PIX_FMT_RGB24, ALIGNMENT); // ALIGNMENT at constant.h
   if (nb <= 0) {
     std::cout << "SwScaleFrameFilter: could not reserve frame " << std::endl;
     exit(5);
@@ -618,6 +652,8 @@ void SwScaleFrameFilter::go(Frame* frame) { // do the scaling
   }
   
   sws_scale(sws_ctx, (const uint8_t * const*)input_frame->data, input_frame->linesize, 0, input_frame->height, output_frame->data, output_frame->linesize);
+  // NOTE: input_frame's are YUV, coming from the decoder.  They are aligned.  We can then decide to scrap the alignment here .. in any case, we must do it at some moment
+  // before passing RGB frames further downstream (to analyzers etc.)
   
   // std::cout << "SwScaleFrameFilter: go: output frame: " << outputframe << std::endl;
   
@@ -625,7 +661,7 @@ void SwScaleFrameFilter::go(Frame* frame) { // do the scaling
     outputframe.copyMetaFrom(frame);
     next->run(&outputframe);
   }
-} 
+}
 
 
 

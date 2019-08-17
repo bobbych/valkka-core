@@ -69,14 +69,25 @@ Some key features of the Valkka library are:
 
 We're currently at alpha
 
-### Current stable version is 0.11.0
+### Latest version is 0.13.2
+- Extracting SPS & PPS packets from RTSP negotiation was disabled..!
+- Now it's on, so cameras that don't send them explicitly (like Axis) should work
+
+### Older versions
+
+0.13.1 Version
+- Matroska export from ValkkaFS, etc.
+- Lightweight OnVif client
+
+0.12.0 Version
+- Shared memory frame transport now includes more metadata about the frames: slot, timestamp, etc.  Now it also works with python multithreading.
+- Numpy was included to valkkafs in an incorrect way, this might have resulted in mysterious segfaults.  Fixed that.
+- At valkka-examples, fixed the multiprocessing/analyzer example (fork first, then spawn threads)
 
 0.11.0 Version
 - Bug fixes at the live555 bridge by Petri
 - ValkkaFS progressing
-- Ubuntu PPA build fails for i386 & armhf.  This has something to do with the ```off_t``` datatype.
-
-### Older versions
+- Currently Ubuntu PPA build fails for i386 & armhf.  This has something to do with the ```off_t``` datatype ?
 
 0.10.0 Version
 - Nasty segmentation fault in OpenGL part fixed: called glDeleteBuffers instread of glDeleteVertexArrays for a VAO !

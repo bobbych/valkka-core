@@ -26,7 +26,7 @@
  *  @file    openglthread_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   start/stop the OpenGLThread etc.
  *
@@ -36,6 +36,8 @@
 #include "framefilter.h"
 #include "logging.h"
 #include "avdep.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

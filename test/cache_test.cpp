@@ -26,7 +26,7 @@
  *  @file    cache_test.cpp
  *  @author  Sampsa Riikonen
  *  @date    2018
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   Test caching frames
  *
@@ -37,6 +37,8 @@
 #include "cachestream.h"
 #include "logging.h"
 #include "avdep.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

@@ -119,8 +119,8 @@ endif (cachestream_verbose)
 # ****************************************************************
 # WARNING: the following three lines are modified by the "setver.bash" script
 SET(MAJOR_VERSION "0") 
-SET(MINOR_VERSION "11") 
-SET(PATCH_VERSION "0") 
+SET(MINOR_VERSION "13") 
+SET(PATCH_VERSION "2") 
 set(VERSION_STRING ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 
 # *** define build type: Debug or Release # now from the command line
@@ -147,8 +147,14 @@ message("*** PYTHON INTERFACE ***")
 # execute_process(COMMAND python3 -c "from distutils import sysconfig; print(sysconfig.get_python_lib(),end='')" OUTPUT_VARIABLE PYTHON_DIR)
 set(PYTHON_DIR "lib/python3/dist-packages") # just hard-code it
 message("PYTHON INSTALL DIR           : " ${PYTHON_DIR})
-execute_process(COMMAND python3 -c "import numpy; print(numpy.get_include())" OUTPUT_VARIABLE NUMPY_INCLUDE_DIR)
+
+execute_process(COMMAND python3 -c "import numpy; print(numpy.get_include(), end='')" OUTPUT_VARIABLE NUMPY_INCLUDE_DIR)
+execute_process(COMMAND python3 -c "import numpy; print(numpy.__version__, end='')" OUTPUT_VARIABLE NUMPY_VERSION)
+
 message("PYTHON NUMPY HEADER FILES IN : " ${NUMPY_INCLUDE_DIR})
+
+add_definitions(-DNUMPY_VERSION="${NUMPY_VERSION}")
+
 # pip3 install: (1.14.5)
 # /home/sampsa/.local/lib/python3.5/site-packages/numpy/__init__.py
 # pip3 install as sudo:
@@ -270,7 +276,7 @@ add_dependencies(valkka_core ${PROJECT_NAME}) # swig .so depends on the main sha
 # set(TESTNAMES "av_live_thread_test" "av_thread_test" "classes_test" "fifo_test" "file_test" "frames_test" "live_stream_check_test" "live_streaming_test" "live_thread_test" "log_test" "opengl_test" "opengl_thread_test" "render_test" "shmem_test" "swscale_test" "threads_test")
 # set(TESTNAMES "shmem_test" "swscale_test")
 # set(TESTNAMES "file_test")
-set(TESTNAMES "frame_test" "framefifo_test" "thread_test" "livethread_test" "avthread_test" "av_live_thread_test" "openglframefifo_test" "openglthread_test" "live_av_openglthread_test" "live_av_openglthread_test2" "live_av_shmem_test" "file_test" "filethread_test" "filethread_test0" "livethread_rtsp_test" "switch_test" "framefilter_test" "cache_test" "usbthread_test" "valkkafs_test" "valkkafswriter_test" "cachestream_test" "cachestream_decode_test" "rawrite_test" "movement_test")
+set(TESTNAMES "frame_test" "framefifo_test" "thread_test" "livethread_test" "avthread_test" "av_live_thread_test" "openglframefifo_test" "openglthread_test" "live_av_openglthread_test" "live_av_openglthread_test2" "live_av_shmem_test" "file_test" "filethread_test" "filethread_test0" "livethread_rtsp_test" "switch_test" "framefilter_test" "cache_test" "usbthread_test" "valkkafs_test" "valkkafswriter_test" "cachestream_test" "cachestream_decode_test" "rawrite_test" "movement_test" "rgbframefifo_test" "ringbuffer_test")
 
 add_custom_target(tests) # Note: without 'ALL'
 foreach( testname ${TESTNAMES} )
@@ -311,7 +317,7 @@ SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${MY_ARCH})
 # The dependencies: keep these consistent with debian/control
 # SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libpython3.5(>= 3.5.2), libgcc1(>= 1:6.0.1), libc6(>= 2.23), libgl1-mesa-glx(>= 12.0.6), libx11-6(>= 2:1.6.3), libstdc++6(>= 5.4.0), libc6(>= 2.23), libglew1.13(>= 1.13.0), python3-numpy") # ubuntu 16
 # NEW: Avoid version numbers, use "utils" packages to imply a dependency, for example, to libglew (without hardcoding the version number into the package name)
-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "python3, mesa-utils, libstdc++5, glew-utils, python3-numpy, v4l-utils")
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS "python3, mesa-utils, libstdc++5, glew-utils, python3-numpy, v4l-utils, python3-pip")
 
 #
 # objdump -p libValkka.so
@@ -364,6 +370,7 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/valkka"  DESTINATION ${PYTHON_DIR}
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/valkka"  DESTINATION ${PYTHON_DIR}  FILES_MATCHING PATTERN "*.so*")
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/valkka"  DESTINATION ${PYTHON_DIR}  FILES_MATCHING PATTERN "*.png")
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/valkka"  DESTINATION ${PYTHON_DIR}  FILES_MATCHING PATTERN "*.yuv")
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/python/valkka/onvif/wsdl"  DESTINATION "${PYTHON_DIR}/valkka/onvif"  FILES_MATCHING PATTERN "*")
 
 # install(DIRECTORY "${FFMPEG_ROOT}" DESTINATION include/valkka   FILES_MATCHING PATTERN "*.h")
 

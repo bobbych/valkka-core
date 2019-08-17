@@ -26,7 +26,7 @@
  *  @file    movement_test.cpp
  *  @author  Petri Eranko <petri.eranko@dasys.fi>
  *  @date    2019
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief 
  *
@@ -39,6 +39,8 @@
 #include "avthread.h"
 #include "livethread.h"
 #include "movement.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;
@@ -62,7 +64,7 @@ void test_1() {
     
     
     InfoFrameFilter      out_filter("passed");
-    MovementFrameFilter  movement("movement", 1000, 0.01, 5000, NULL, &out_filter); // MovementFrameFilter(const char* name, long int interval, float treshold, long int duration, PyObject* pycallback, FrameFilter* next)
+    MovementFrameFilter  movement("movement", 1000, 0.01, 5000, &out_filter); // MovementFrameFilter(const char* name, long int interval, float treshold, long int duration, PyObject* pycallback, FrameFilter* next)
     AVThread             avthread("avthread", movement);
     FifoFrameFilter      &av_filter = avthread.getFrameFilter(); // request framefilter from AVThread
     LiveThread           livethread("live");

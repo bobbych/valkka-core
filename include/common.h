@@ -29,7 +29,7 @@
  *  @file    common.h
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief List of common header files
  *
@@ -93,6 +93,8 @@
 #include<GL/glew.h>
 #include<GL/glx.h>
 #include<GL/glxext.h>
+
+#define PY_ARRAY_UNIQUE_SYMBOL valkka_shmem_array_api
 
 #endif
 

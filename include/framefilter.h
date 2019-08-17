@@ -28,7 +28,7 @@
  *  @file    framefilter.h
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   Definition of FrameFilter and derived classes for various purposes
  */ 
@@ -111,6 +111,35 @@ public:                                                                         
 protected:
   void go(Frame* frame);
 };                                                                              // <pyapi>
+
+
+/** FrameFilter s that are fed from various different threads, should be protected with this
+ * 
+ * 
+ * Thread --> framefilter --+
+ *                          + --> ThreadSafeFrameFilter --> Final frame filter
+ * Thread --> framefilter --+
+ * 
+ * @ingroup filters_tag
+ */
+class ThreadSafeFrameFilter : public FrameFilter {                               // <pyapi>
+  
+private:
+    std::mutex mutex;
+    
+public:                                                                          // <pyapi>
+    ThreadSafeFrameFilter(const char* name, FrameFilter* next=NULL);             // <pyapi>
+    
+protected:
+    void go(Frame* frame);
+  
+public:
+    void run(Frame* frame);
+};                                                                              // <pyapi>
+
+
+
+
 
 
 /** Replicates frame flow to two filters
@@ -227,6 +256,24 @@ protected:
 protected:
   void go(Frame* frame);
   
+};                                                                          // <pyapi>
+
+
+/** Passes through frames with a certain slot number only
+ * @ingroup filters_tag
+ * 
+ */
+class PassSlotFrameFilter : public FrameFilter {                            // <pyapi>
+    
+public:                                                                     // <pyapi>
+    PassSlotFrameFilter(const char* name, SlotNumber n_slot, FrameFilter* next = NULL); // <pyapi>
+    
+protected:
+    unsigned n_slot;
+    
+protected:
+    void go(Frame* frame);
+    void run(Frame* frame);
 };                                                                          // <pyapi>
 
 
@@ -439,6 +486,8 @@ public:                     // <pyapi>
 /** Changes the slot number of the Frame
  *
  * Mutex-protected (calls to SetSlotFrameFilter::setSlot happen during streaming)
+ * 
+ * This is a mutex-protected version of SlotFrameFilter.  Not used that much at.  Should deprecate this.
  * 
  * @ingroup filters_tag 
  */

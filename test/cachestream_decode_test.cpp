@@ -26,7 +26,7 @@
  *  @file    cachestream_decode_test.cpp
  *  @author  Petri Eranko
  *  @date    2018
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief 
  *
@@ -40,6 +40,8 @@
 #include "valkkafsreader.h"
 #include "cachestream.h"
 #include "avthread.h"
+#include "test_import.h"
+
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

@@ -26,7 +26,7 @@
  *  @file    live_av_openglthread_test2.cpp
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   Test the full pipeline: LiveThread => AVThread => OpenGLThread .. and draw some boxes!
  *
@@ -39,6 +39,7 @@
 #include "avthread.h"
 #include "openglthread.h"
 #include "livethread.h"
+#include "test_import.h"
 
 using namespace std::chrono_literals;
 using std::this_thread::sleep_for;

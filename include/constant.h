@@ -28,7 +28,7 @@
  *  @file    constant.h
  *  @author  Sampsa Riikonen
  *  @date    2017
- *  @version 0.11.0 
+ *  @version 0.13.2 
  *  
  *  @brief   Constant/default values, version numbers
  */ 
@@ -39,9 +39,28 @@
 #define GLX_CONTEXT_MAJOR_VERSION       0x2091
 #define GLX_CONTEXT_MINOR_VERSION       0x2092
 
+#define ALIGNMENT 1
+/*
+ 
+https://stackoverflow.com/questions/35678041/what-is-linesize-alignment-meaning
+https://softwareengineering.stackexchange.com/questions/328775/how-important-is-memory-alignment-does-it-still-matter
+ 
+- decoder returns YUV frames that are aligned
+- ..during YUV => RGB interpolation (SwScaleFrameFilter, etc.), we get rid of the alignment (i.e. the extra padding bytes)
+- ..anyway, that must be done at some moment before passing the frames downstream (for analyzers, etc.)
+ 
+=> KEEP ALIGNMENT = 1
+
+- ..there might be performance benefits in using, for the final rgb bitmap images, widths that are multiples of 32
+*/
+
+const char* get_numpy_version() {  // <pyapi>
+    return NUMPY_VERSION;          // <pyapi>
+}                                  // <pyapi> 
+    
 static const int VERSION_MAJOR = 0; // <pyapi>
-static const int VERSION_MINOR = 11; // <pyapi>
-static const int VERSION_PATCH = 0; // <pyapi>
+static const int VERSION_MINOR = 13; // <pyapi>
+static const int VERSION_PATCH = 2; // <pyapi>
 
 static const unsigned DEFAULT_OPENGLTHREAD_BUFFERING_TIME  = 300;   // in milliseconds // <pyapi>
 static const bool DEFAULT_FRAMEFIFO_FLUSH_WHEN_FULL        = false; // <pyapi>
